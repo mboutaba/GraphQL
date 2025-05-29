@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+
+     
+
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    input {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+    }
+
+     
+     #btn,
+    #identifier,
+#password {
+  display: block;
+  margin: 10px auto; /* Top/bottom spacing and center horizontally */
+  width: 80%;        /* Adjust width as needed */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#title {
+  text-align: center;
+  display: block;
+  margin: 5px auto; /* Top/bottom spacing and center horizontally */
+  width: 80%;        /* Adjust width as needed */
+  padding: 10px;
+  
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2 id="title">Login</h2>
+    <input type="text" id="identifier" placeholder="Username or Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="btn">Log In</button>
+    <p class="error" id="errorMsg"></p>
+  </div>
+
+   
+
+  <script src="js/login.js"></script>
+
+
+</body>
+
+</html>

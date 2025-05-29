@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile</title>
+   <style>
+
+  :root {
+      --primary: #6c5ce7;
+      --primary-dark: #5649c0;
+      --secondary: #00cec9;
+      --accent: #fd79a8;
+      --success: #4CAF50;
+      --danger: #d63031;
+      --warning: #fdcb6e;
+      --light: #f5f6fa;
+      --dark: #2d3436;
+      --text: #636e72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+      transform: rotate(30deg);
+    }
+
+    #welcome {
+      font-size: 2.5rem;
+      margin: 0;
+      position: relative;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-weight: 600;
+    }
+
+    #welcome span {
+      font-weight: 700;
+      margin-left: 5px;
+    }
+
+    .profile {
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .profile::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: var(--accent);
+      border-radius: 0 0 0 100%;
+      z-index: -1;
+      opacity: 0.1;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      background: var(--light);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .info-item {
+      margin: 15px 25px;
+      text-align: center;
+      min-width: 150px;
+    }
+
+    .info-item strong {
+      display: block;
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .info-item p {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--dark);
+      background: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    
+    .graphs {
+      display: block;
+      align-items: center;
+      justify-content: center;
+      overflow-x: auto;
+      white-space: nowrap;
+      gap: 80px;
+      flex-wrap: nowrap;
+      padding-top: 20px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-top: 20px;
+    }
+
+    .skills-container{
+
+         display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: auto;
+      white-space: nowrap;
+      gap: 80px;
+      flex-wrap: nowrap;
+      padding-top: 20px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-top: 20px;
+    }
+
+     .skills-title {
+     text-align: center;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .graphs2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding-top: 30px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-top: 20px;
+    }
+ 
+
+    .pie-chart-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .pie-chart-title {
+       text-align: center;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .pie-chart-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+    }
+
+    .legend-color {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .legend-color.passed {
+      background-color: var(--success);
+    }
+
+    .legend-color.failed {
+      background-color: var(--danger);
+    }
+
+    button {
+      display: block;
+      margin: 40px auto 0;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.6);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+   </style>
+</head>
+
+<body>
+
+  <header>
+    <h1 id="welcome">
+      HELLO! <span id="firstName">Loading...</span> <span id="lastName">Loading...</span>
+    </h1>
+  </header>
+
+  <main class="profile">
+    <section class="info">
+      <div class="info-item">
+        <strong>Current Level :</strong>
+        <p id="level">Loading...</p>
+      </div>
+      <div class="info-item">
+        <strong>Audit Ratio :</strong>
+        <p id="audit">Loading...</p>
+      </div>
+      <div class="info-item">
+        <strong>Total XP :</strong>
+        <p id="xp">Loading...</p>
+      </div>
+    </section>
+   <div class="skills-title">Skills</div>
+
+     <div class="skills-container"> 
+      
+    
+   
+      <div class="graphs">
+
+       
+
+        <svg id="graph1" width="600" height="100" style="border:1px solid #ccc;"> </svg>
+
+      </div>
+ </div>
+
+     
+
+<div class="pie-chart-title" style="padding-top: 50px;">Audit Results</div>
+
+ <div class="pie-chart-container">
+          
+          <svg id="auditPieChart" width="200" height="200" viewBox="0 0 100 100">
+            <!-- Pie chart will be inserted here by JavaScript -->
+          </svg>
+          <div class="pie-chart-legend">
+            <div class="legend-item">
+              <span class="legend-color passed"></span>
+              <span class="legend-text">Passed: <span id="passedPercent">0</span></span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color failed"></span>
+              <span class="legend-text">Failed: <span id="failedPercent">0</span></span>
+            </div>
+          </div>
+        </div>
+    <button onclick="logout()">Logout</button>
+  </main>
+
+  <script src="js/home.js"></script>
+
+  <script>
+
+
+  </script>
+</body>
+
+</html>
