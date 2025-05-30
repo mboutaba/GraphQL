@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/*"
-  to = "https://graphql123.netlify.app/"  # Replace with your URL
-  status = 200
-  force = true

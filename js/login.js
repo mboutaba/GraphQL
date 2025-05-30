@@ -38,7 +38,7 @@ submit.addEventListener("click", async function () {
     localStorage.setItem("jwt", token); // now it's stored safely
 
     // ✅ Redirect after token is saved
-    window.location.href = "/home";
+    window.location.href = "home.html";
 
   } catch (err) {
     console.error(err);

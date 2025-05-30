@@ -6,7 +6,7 @@ function capitalize(str) {
 
 function logout() {
 
-  window.location.href = "/";
+  window.location.href = "login.html";
 
   localStorage.removeItem("jwt");
 
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!jwt) {
 
-    window.location.href = "/";
+    window.location.href = "login.html";
 
   }
 
