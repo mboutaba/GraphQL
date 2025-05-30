@@ -260,6 +260,12 @@
     }
 
    </style>
+    <script>
+     const isLoggedIn = localStorage.getItem('jwt'); // or whatever your auth check is
+    if (!isLoggedIn) {
+      window.location.replace('login.html'); // replace is smoother than href
+    }
+  </script>
 </head>
 
 <body>
