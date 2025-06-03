@@ -6,7 +6,6 @@
   <title>Login</title>
   <style>
     body {
-      margin: 0;
       font-family: sans-serif;
       background-color: #f4f4f4;
       display: flex;
@@ -16,15 +15,16 @@
     }
 
     .login-container {
-      width: 600px;
-      height: 250px;
-      max-width: 700px;
-      max-height: 400px;
-      margin: 400px auto;
-      padding:0px;
-      background: #ffffff;
+
+     
+
+      background: white;
+     
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 350px;
+
+      padding-bottom: 20px;
     }
 
     input {
@@ -47,38 +47,29 @@
       font-size: 0.9rem;
     }
 
-
-    #btn,
+     
+     #btn,
     #identifier,
-    #password {
-      display: block;
-      margin: 20px auto;
-      /* Top/bottom spacing and center horizontally */
-      width: 60%;
-      /* Adjust width as needed */
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
+#password {
+  display: block;
+  margin: 10px auto; /* Top/bottom spacing and center horizontally */
+  width: 80%;        /* Adjust width as needed */
+  padding: 10px;
+  
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
 
-    #title {
-      text-align: center;
-      display: block;
-      margin: 5px auto;
-      /* Top/bottom spacing and center horizontally */
-      width: 80%;
-      /* Adjust width as needed */
-      padding: 10px;
+#title {
+  text-align: center;
+  display: block;
+  margin: 5px auto; /* Top/bottom spacing and center horizontally */
+  width: 80%;        /* Adjust width as needed */
+  padding: 10px;
+  
+}
 
-    }
-
-    @media (max-width: 800px) {
-      .login-container {
-        margin: 600px;
-        padding: 400px;
-      }
-    }
   </style>
 </head>
 
@@ -91,10 +82,14 @@
     <p class="error" id="errorMsg"></p>
   </div>
 
-
+   
 
   <script src="js/login.js"></script>
 
+
+</body>
+
+</html>
 
 </body>
 
