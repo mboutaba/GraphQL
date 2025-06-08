@@ -16,11 +16,15 @@
     }
 
     .login-container {
-      width: 600px;
+    display: flex;
+     /* justify-content: space-around; */
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      /* width: 600px;
       height: 250px;
       max-width: 700px;
-      max-height: 400px;
-      margin: 400px auto;
+      max-height: 400px; */
+      /* margin: 400px auto; */
       padding:0px;
       background: #ffffff;
       border-radius: 10px;
@@ -30,7 +34,7 @@
     input {
       width: 100%;
       margin: 10px 0;
-      padding: 10px;
+      padding: 0px;
     }
 
     button {
@@ -51,16 +55,20 @@
     #btn,
     #identifier,
     #password {
-      display: block;
-      margin: 20px auto;
+      display: flex;
+      margin: 10px auto;
       /* Top/bottom spacing and center horizontally */
-      width: 60%;
+      width: 50%;
+      height: 5%;
       /* Adjust width as needed */
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      box-sizing: border-box;
+       
     }
+
+ 
+
 
     #title {
       text-align: center;
@@ -72,13 +80,7 @@
       padding: 10px;
 
     }
-
-    @media (max-width: 800px) {
-      .login-container {
-        margin: 600px;
-        padding: 400px;
-      }
-    }
+ 
   </style>
 </head>
 

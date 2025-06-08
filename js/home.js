@@ -47,8 +47,8 @@ function createSlice(startAngle, endAngle, color) {
 
 function createPieChart(passedPercent, failedPercent) {
 
- 
-    
+
+
 
   const svg = document.getElementById('auditPieChart');
   svg.innerHTML = ''; // Clear any existing content
@@ -64,8 +64,8 @@ function createPieChart(passedPercent, failedPercent) {
   }
 
   // Update the legend text
-  document.getElementById('passedPercent').textContent = passedPercent.toFixed(1) + "% / " +  passedCount ;
-  document.getElementById('failedPercent').textContent = failedPercent.toFixed(1)  + "% / " + failedCount  ;
+  document.getElementById('passedPercent').textContent = passedPercent.toFixed(1) + "% / " + passedCount;
+  document.getElementById('failedPercent').textContent = failedPercent.toFixed(1) + "% / " + failedCount;
 
 
 
@@ -158,9 +158,15 @@ document.addEventListener("DOMContentLoaded", function () {
      
     }
 
-   transaction (
+   level :  transaction ( 
    
-    where: { type: { _eq: "level"} }
+   where: { 
+   type: { _eq: "level"} , 
+   event: { path: { _like: "%module" }}}
+   
+   
+    
+   
     )
      {
       type
@@ -173,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
     where: {
     type: { _eq: "xp" },
     path: { _like: "/oujda/module/%" } 
-    _not: { path: { _like: "/oujda/module/piscine-js/%" }}
+    _not: { path: { _like: "/oujda/module/piscine-%" }}
 
   }
     )
@@ -185,14 +191,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
       
-  skills : transaction (
-
-   distinct_on: type
+  skills : transaction (distinct_on: type
     order_by: [{ type: asc }, { id: desc }]
 
-  where: {    
-
-  type: { _like: "skill_%" } ,
+  where: { type: { _like: "skill_%" } ,
 
      _and: [
       
@@ -201,7 +203,10 @@ document.addEventListener("DOMContentLoaded", function () {
     ]
   }
   
-  ){
+  )
+  
+  
+  {
   
   path
   type
@@ -241,13 +246,6 @@ user {
     body: JSON.stringify({ query })                                    //graphql query
   }).then(res => res.json())
 
-    //first last name
-
-    //level
-    //total xp
-
-    //skills (   bar chart  )
-    //audit ratio ( pie chart for svg grqph )
 
     .then(data => {
 
@@ -265,7 +263,7 @@ user {
 
 
 
-      level.textContent = data.data.transaction[(data.data.transaction.length) - 1].amount   /// level
+      level.textContent = data.data.level[(data.data.level.length) - 1].amount   /// level
 
       ////////////////////////////  TOTAL XP   ///////////////////////////////////////     
 
@@ -278,11 +276,11 @@ user {
 
       xp.textContent = Math.ceil(count / 1000) + "Kb"
 
- //////////////////////////////   Audit ratio  //////////////////////////////
+      //////////////////////////////   Audit ratio  //////////////////////////////
 
-const userData = data.data.user[0];
-  const successCount = userData.audits_aggregate.aggregate.count;
-  const failCount = userData.failed_audits.aggregate.count;
+      const userData = data.data.user[0];
+      const successCount = userData.audits_aggregate.aggregate.count;
+      const failCount = userData.failed_audits.aggregate.count;
 
 
 
