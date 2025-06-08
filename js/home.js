@@ -1,8 +1,10 @@
-
+ 
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
+
 
 function logout() {
 
@@ -12,43 +14,14 @@ function logout() {
 
 }
 
-function createSlice(startAngle, endAngle, color) {
-  // Convert angles to radians
-  const startRad = (startAngle - 90) * Math.PI / 180;
-  const endRad = (endAngle - 90) * Math.PI / 180;
-
-  // Calculate coordinates
-  const x1 = 50 + 50 * Math.cos(startRad);
-  const y1 = 50 + 50 * Math.sin(startRad);
-  const x2 = 50 + 50 * Math.cos(endRad);
-  const y2 = 50 + 50 * Math.sin(endRad);
-
-  // Determine if this is a large arc (angles > 180 degrees)
-  const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-
-  // Create the path data
-  const pathData = [
-    `M 50 50`,
-    `L ${x1} ${y1}`,
-    `A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2}`,
-    `Z`
-  ].join(' ');
-
-  // Create the path element
-  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('d', pathData);
-  path.setAttribute('fill', color);
-  return path;
-}
-
-
+  
 
 
 
 function createPieChart(passedPercent, failedPercent) {
 
-
-
+ 
+    
 
   const svg = document.getElementById('auditPieChart');
   svg.innerHTML = ''; // Clear any existing content
@@ -56,6 +29,7 @@ function createPieChart(passedPercent, failedPercent) {
   let passedCount = passedPercent
   let failedCount = failedPercent
   // Ensure percentages add up to 100
+  
   const total = passedPercent + failedPercent;
 
   if (total !== 100) {
@@ -64,8 +38,8 @@ function createPieChart(passedPercent, failedPercent) {
   }
 
   // Update the legend text
-  document.getElementById('passedPercent').textContent = passedPercent.toFixed(1) + "% / " + passedCount;
-  document.getElementById('failedPercent').textContent = failedPercent.toFixed(1) + "% / " + failedCount;
+  document.getElementById('passedPercent').textContent = passedPercent.toFixed(1) + "% / " +  passedCount ;
+  document.getElementById('failedPercent').textContent = failedPercent.toFixed(1)  + "% / " + failedCount  ;
 
 
 
@@ -77,22 +51,41 @@ function createPieChart(passedPercent, failedPercent) {
 
 
   // Add slices to the SVG
-  svg.appendChild(createSlice(0, passedAngle, '#4CAF50')); // Green for passed
-  svg.appendChild(createSlice(passedAngle, failedAngle, '#d63031')); // Red for failed
-
-
-
-
-  // Optional: Add a center circle to make it a donut chart
-  const centerCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  centerCircle.setAttribute('cx', '50');
-  centerCircle.setAttribute('cy', '50');
-  centerCircle.setAttribute('r', '30');
-  centerCircle.setAttribute('fill', '#ffffff');
-  svg.appendChild(centerCircle);
-
+  svg.appendChild(createSlice(passedPercent)); // Green for passed
+  
 
 }
+
+
+
+
+
+
+
+function createSlice(percent) {
+
+let left = 100 - percent
+
+ console.log(left)
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  
+   path.setAttribute('cx', "18");
+    path.setAttribute('cy', "18");
+     path.setAttribute('r', "16");
+      path.setAttribute('fill', "none");
+       path.setAttribute('stroke', "green");
+        path.setAttribute('stroke-width', "4");
+         path.setAttribute('stroke-dasharray', `${percent} ${left}`);
+          path.setAttribute('stroke-dashoffset', "25");
+
+          console.log(percent)
+
+  return path;
+
+}
+
+
+
 
 
 
@@ -246,6 +239,13 @@ user {
     body: JSON.stringify({ query })                                    //graphql query
   }).then(res => res.json())
 
+    //first last name
+
+    //level
+    //total xp
+
+    //skills (   bar chart  )
+    //audit ratio ( pie chart for svg grqph )
 
     .then(data => {
 
