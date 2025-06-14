@@ -1,4 +1,4 @@
- 
+
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -14,22 +14,20 @@ function logout() {
 
 }
 
-  
+
 
 
 
 function createPieChart(passedPercent, failedPercent) {
 
- 
-    
 
-  const svg = document.getElementById('auditPieChart');
-  svg.innerHTML = ''; // Clear any existing content
+  const svg = document.getElementById('svgID');
+  // Clear any existing content
 
   let passedCount = passedPercent
   let failedCount = failedPercent
   // Ensure percentages add up to 100
-  
+
   const total = passedPercent + failedPercent;
 
   if (total !== 100) {
@@ -38,21 +36,12 @@ function createPieChart(passedPercent, failedPercent) {
   }
 
   // Update the legend text
-  document.getElementById('passedPercent').textContent = passedPercent.toFixed(1) + "% / " +  passedCount ;
-  document.getElementById('failedPercent').textContent = failedPercent.toFixed(1)  + "% / " + failedCount  ;
-
-
-
-  // Calculate the end angles for each segment
-  const passedAngle = (passedPercent / total) * 360;
-  const failedAngle = 360;
-
-
-
+  document.getElementById('passedPercent').textContent = passedPercent.toFixed(1) + "% / " + passedCount;
+  document.getElementById('failedPercent').textContent = failedPercent.toFixed(1) + "% / " + failedCount;
 
   // Add slices to the SVG
   svg.appendChild(createSlice(passedPercent)); // Green for passed
-  
+
 
 }
 
@@ -64,21 +53,19 @@ function createPieChart(passedPercent, failedPercent) {
 
 function createSlice(percent) {
 
-let left = 100 - percent
-
- console.log(left)
+ 
+ 
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  
-   path.setAttribute('cx', "18");
-    path.setAttribute('cy', "18");
-     path.setAttribute('r', "16");
-      path.setAttribute('fill', "none");
-       path.setAttribute('stroke', "green");
-        path.setAttribute('stroke-width', "4");
-         path.setAttribute('stroke-dasharray', `${percent} ${left}`);
-          path.setAttribute('stroke-dashoffset', "25");
 
-          console.log(percent)
+  path.setAttribute('cx', "18");
+  path.setAttribute('cy', "18");
+  path.setAttribute('r', "16");
+  path.setAttribute('fill', "none");
+  path.setAttribute('stroke', "green");
+  path.setAttribute('stroke-width', "4");
+  path.setAttribute('stroke-dasharray', `${percent}`);
+
+ 
 
   return path;
 
@@ -97,7 +84,9 @@ let left = 100 - percent
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+
+
 
   const endpoint = 'https://learn.zone01oujda.ma/api/graphql-engine/v1/graphql';
 
@@ -117,33 +106,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const svgHeight = Number(svg.getAttribute("height"));
 
-
-
-
   const jwt = localStorage.getItem("jwt");
 
   console.log(jwt)
 
-  if (!jwt) {
+  if  (!jwt)  {
 
     window.location.href = "login.html";
 
   }
 
 
-
-
-
-
-
-
-
-
-
-
   const query = `
    {
    
+
+
+
+
     user {
       firstName
       lastName
@@ -151,28 +131,26 @@ document.addEventListener("DOMContentLoaded", function () {
      
     }
 
-   level :  transaction ( 
+
+
+
+   transaction (
    
-   where: { 
-   type: { _eq: "level"} , 
-   event: { path: { _like: "%module" }}}
-   
-   
+    where: { type: { _eq: "level"}, event: {path: {_like: "%module" } } }
     
-   
-    )
-     {
+     ){
       type
       amount
       path
       }
 
-      myTransaction : transaction  (
+
+
+
+    myTransaction : transaction  (
    
-    where: {
-    type: { _eq: "xp" },
-    path: { _like: "/oujda/module/%" } 
-    _not: { path: { _like: "/oujda/module/piscine-%" }}
+    where: { type: { _eq: "xp" }, event : { path: { _like: "%module" } }
+    
 
   }
     )
@@ -183,11 +161,19 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
 
+
+
+
       
-  skills : transaction (distinct_on: type
+      
+  skills : transaction (
+
+   distinct_on: type
     order_by: [{ type: asc }, { id: desc }]
 
-  where: { type: { _like: "skill_%" } ,
+  where: {    
+
+  type: { _like: "skill_%" } ,
 
      _and: [
       
@@ -196,10 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ]
   }
   
-  )
-  
-  
-  {
+  ){
   
   path
   type
@@ -212,6 +195,11 @@ document.addEventListener("DOMContentLoaded", function () {
      
     }
   }
+
+
+
+
+
 user {
     audits_aggregate(where: { closureType: { _eq: succeeded } }) {
             aggregate {
@@ -230,175 +218,179 @@ user {
 }
   `;
   //
-  fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${jwt}`
-    },
-    body: JSON.stringify({ query })                                    //graphql query
-  }).then(res => res.json())
+  try {
 
-    //first last name
-
-    //level
-    //total xp
-
-    //skills (   bar chart  )
-    //audit ratio ( pie chart for svg grqph )
-
-    .then(data => {
-
-      console.log(data)
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${jwt}`
+      },
+      body: JSON.stringify({ query })                                    //graphql query
+    });
 
 
-      //////////////////////////   NAME & LASTNAME & AUDIT RATIO ///////////////////////////////////////////
+    if (!response.ok) {
 
-      name.textContent = capitalize(data.data.user[0].firstName)
-      lastname.textContent = capitalize(data.data.user[0].lastName)
+      console.log("invalid jwt fetch");
+     
+      return;
 
-      audit.textContent = data.data.user[0].auditRatio.toFixed(1);
+    }
 
-      /////////////////////////// LEVEL AMOUNT //////////////////////////////////////////     
+    const data = await response.json();
 
 
+   
+if (data) {
 
-      level.textContent = data.data.level[(data.data.level.length) - 1].amount   /// level
+        //////////////////////////   NAME & LASTNAME & AUDIT RATIO ///////////////////////////////////////////
 
-      ////////////////////////////  TOTAL XP   ///////////////////////////////////////     
+        name.textContent = capitalize(data.data.user[0].firstName)
+        lastname.textContent = capitalize(data.data.user[0].lastName)
 
-      let count = 0;
-      for (i = 0; i < data.data.myTransaction.length; i++) {
+        audit.textContent = data.data.user[0].auditRatio.toFixed(1);
 
-        count += parseInt(data.data.myTransaction[i].amount)
-
-      }
-
-      xp.textContent = Math.ceil(count / 1000) + "Kb"
-
-      //////////////////////////////   Audit ratio  //////////////////////////////
-
-      const userData = data.data.user[0];
-      const successCount = userData.audits_aggregate.aggregate.count;
-      const failCount = userData.failed_audits.aggregate.count;
+        /////////////////////////// LEVEL AMOUNT //////////////////////////////////////////     
 
 
 
+        level.textContent = data.data.transaction[(data.data.transaction.length) - 1].amount   /// level
 
+        ////////////////////////////  TOTAL XP   ///////////////////////////////////////     
 
-      ///////////////////////////////   SKILLS GRAPH GRID   ///////////////////////////////////
+        let count = 0;
+        for (i = 0; i < data.data.myTransaction.length; i++) {
 
+          count += parseInt(data.data.myTransaction[i].amount)
 
+        }
 
-      const gridSpacing = (data.data.skills.length); // You can change this value to make the grid finer or coarser
-      for (let i = 0; i <= svgHeight + 1; i += (svgHeight / 10)) {  // 10 steps
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", 0); // Starting X (left edge)
-        line.setAttribute("y1", i); // Starting Y
-        line.setAttribute("x2", svgWidth); // Ending X (right edge)
-        line.setAttribute("y2", i); // Ending Y (same as starting Y)
-        line.setAttribute("stroke", "#dddd"); // Light gray color
-        line.setAttribute("stroke-width", "1");
-        svg.appendChild(line);
-      }
+        xp.textContent = Math.floor(count / 1000) + "Kb"
 
-      // Draw vertical grid lines (every 10 units)
-      for (let i = 0; i <= svgWidth + 1; i += (svgWidth / gridSpacing)) { // 10 steps
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", i); // Starting X
-        line.setAttribute("y1", 0); // Starting Y (top edge)
-        line.setAttribute("x2", i); // Ending X (same as starting X)
-        line.setAttribute("y2", svgHeight); // Ending Y (bottom edge)
-        line.setAttribute("stroke", "#dddd"); // Light gray color
-        line.setAttribute("stroke-width", "1");
-        svg.appendChild(line);
-      }
+        //////////////////////////////   Audit ratio  //////////////////////////////
+
+        const userData = data.data.user[0];
+        const successCount = userData.audits_aggregate.aggregate.count;
+        const failCount = userData.failed_audits.aggregate.count;
 
 
 
-      //////////////////////////////////////////////////////////////////////////////////
+
+
+        ///////////////////////////////   SKILLS GRAPH GRID   ///////////////////////////////////
 
 
 
-      //////////////////////////    SKILLS  //////////////////////////////////////////
+        const gridSpacing = (data.data.skills.length); // You can change this value to make the grid finer or coarser
+        for (let i = 0; i <= svgHeight + 1; i += (svgHeight / 10)) {  // 10 steps
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", 0); // Starting X (left edge)
+          line.setAttribute("y1", i); // Starting Y
+          line.setAttribute("x2", svgWidth); // Ending X (right edge)
+          line.setAttribute("y2", i); // Ending Y (same as starting Y)
+          line.setAttribute("stroke", "#dddd"); // Light gray color
+          line.setAttribute("stroke-width", "1");
+          svg.appendChild(line);
+        }
 
-      data.data.skills.sort((a, b) => b.amount - a.amount);
+        // Draw vertical grid lines (every 10 units)
+        for (let i = 0; i <= svgWidth + 1; i += (svgWidth / gridSpacing)) { // 10 steps
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", i); // Starting X
+          line.setAttribute("y1", 0); // Starting Y (top edge)
+          line.setAttribute("x2", i); // Ending X (same as starting X)
+          line.setAttribute("y2", svgHeight); // Ending Y (bottom edge)
+          line.setAttribute("stroke", "#dddd"); // Light gray color
+          line.setAttribute("stroke-width", "1");
+          svg.appendChild(line);
+        }
 
-      let spacing = 10
 
-      let barWidth = 30
 
-      const totalBars = (data.data.skills.length);
+        //////////////////////////////////////////////////////////////////////////////////
 
-      const totalWidth = totalBars * (barWidth + spacing);
 
-      svg.setAttribute("width", totalWidth);
 
-      for (i = 0; i < data.data.skills.length; i++) {
+        //////////////////////////    SKILLS  //////////////////////////////////////////
 
-        const totalBars = (data.data.skills.length);
-
-        let skill = data.data.skills[i].type    // skill_prog
-
-        let amount = Number(data.data.skills[i].amount)    // 25
+        data.data.skills.sort((a, b) => b.amount - a.amount);
 
         let spacing = 10
 
         let barWidth = 30
 
+        const totalBars = (data.data.skills.length);
+
         const totalWidth = totalBars * (barWidth + spacing);
 
+        svg.setAttribute("width", totalWidth);
 
+        for (i = 0; i < data.data.skills.length; i++) {
 
-        let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+          const totalBars = (data.data.skills.length);
 
-        rect.setAttribute("x", i * (spacing + barWidth) + 5)
-        rect.setAttribute("y", (svgHeight - amount))
-        rect.setAttribute("width", barWidth);
-        rect.setAttribute("height", amount);
-        rect.setAttribute("fill", "#4CAF50");
-        rect.setAttribute("id", skill)
+          let skill = data.data.skills[i].type    // skill_prog
 
-        svg.appendChild(rect);
+          let amount = Number(data.data.skills[i].amount)    // 25
 
-        let textTop = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        textTop.setAttribute("x", i * (spacing + barWidth) + 20);
-        textTop.setAttribute("y", svgHeight - amount - 5); // 5px above the bar
-        textTop.setAttribute("text-anchor", "middle");
-        textTop.setAttribute("font-size", "10");
-        textTop.textContent = amount + "%";
-        svg.appendChild(textTop);
+          let spacing = 10
 
-        let textBottom = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        textBottom.setAttribute("x", i * (spacing + barWidth) + 20);
-        textBottom.setAttribute("y", svgHeight - amount - 20); // 12px below the SVG bottom edge
-        textBottom.setAttribute("text-anchor", "middle");
-        textBottom.setAttribute("font-size", "9");
-        textBottom.textContent = skill.replace("skill_", ""); // Optional: remove prefix
-        svg.appendChild(textBottom);
+          let barWidth = 30
 
-
-      }
-
-      //////////////////////  PIE GRAPH /////////////////////////
-
-
-      createPieChart(successCount, failCount)
-
-      ////////////////////////////////////////////
-
-      //////////////////////////////////////////////////////////////////////////
-
-      //////////////////////////////////////////////////////////////////////////////
-
-
-    }).catch(err =>
-      console.log(err)
-    );
+          const totalWidth = totalBars * (barWidth + spacing);
 
 
 
+          let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 
+          rect.setAttribute("x", i * (spacing + barWidth) + 5)
+          rect.setAttribute("y", (svgHeight - amount))
+          rect.setAttribute("width", barWidth);
+          rect.setAttribute("height", amount);
+          rect.setAttribute("fill", "#4CAF50");
+          rect.setAttribute("id", skill)
+
+          svg.appendChild(rect);
+
+          let textTop = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textTop.setAttribute("x", i * (spacing + barWidth) + 20);
+          textTop.setAttribute("y", svgHeight - amount - 5); // 5px above the bar
+          textTop.setAttribute("text-anchor", "middle");
+          textTop.setAttribute("font-size", "10");
+          textTop.textContent = amount + "%";
+          svg.appendChild(textTop);
+
+          let textBottom = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textBottom.setAttribute("x", i * (spacing + barWidth) + 20);
+          textBottom.setAttribute("y", svgHeight - amount - 20); // 12px below the SVG bottom edge
+          textBottom.setAttribute("text-anchor", "middle");
+          textBottom.setAttribute("font-size", "9");
+          textBottom.textContent = skill.replace("skill_", ""); // Optional: remove prefix
+          svg.appendChild(textBottom);
+
+
+        }
+
+        //////////////////////  PIE GRAPH /////////////////////////
+
+
+        createPieChart(successCount, failCount)
+
+        ////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////
+
+}
+       
+  } catch (err) {
+
+    
+window.location.href = "login.html"
+    
+  }
 
 
 });

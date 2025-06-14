@@ -35,9 +35,9 @@ submit.addEventListener("click", async function () {
       return;
     }
 
-    localStorage.setItem("jwt", token); 
+    localStorage.setItem("jwt", token); // now it's stored safely
 
-    
+    // ✅ Redirect after token is saved
     window.location.href = "home.html";
 
   } catch (err) {
